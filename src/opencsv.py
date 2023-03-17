@@ -5,7 +5,7 @@ import pandas as pd
 def open_csv(filepath="../data/clean/title.csv"):
     """
     Function that takes as input a file path and 
-    returns the data  from Movies and Tv Shows
+    returns the data  from Movies and Tv Shows.
     """
    
     data = pd.read_csv(filepath)

@@ -4,7 +4,11 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-def dataPreparation(data=None):
+def preparation(data=None):
+    """
+    A function that prepares the cosine similarity function
+    and the 'index searcher'.
+    """
     #Define a TF-IDF Vectorizer Object. 
     #This remove all english stop words such as 'the', 'a'
     tfidf = TfidfVectorizer(stop_words='english')
@@ -21,18 +25,33 @@ def dataPreparation(data=None):
     return indices, cosine_sim
 
 def getTitle(indices=None):
-   pass 
+    """
+    Function that gets the 'index searcher' and searches
+    the user's title index.
+    """
+    print('**' * 40)
+    title = input("Recommend similar titles to: ") 
+    try:
+        index = indices[title]  
+        return index
+    except:
+        print("\n   Title not found") 
+        print('**' * 40)
+        input("\n(Press anithing)")
+        return None
 
-def getRecommendation(title=None, data=None, indices=None, cosine_sim=None):
-    
-    idx = indices[title]
-      
+def getRecommendation(index=None, data=None, cosine_sim=None):
+    """
+    A function that takes a title index, the data, and the 
+    cosine similarity  as input and prints on the screen the 
+    10 most similar titles based on description.
+    """
     print('**' * 40)
 
-    print(f"Symilar to: {data['title'].iloc[idx]} ({data['release_year'].iloc[idx]})", end="\n\n")
+    print(f"Symilar to: {data['title'].iloc[index]} ({data['release_year'].iloc[index]})", end="\n\n")
 
     # Get the pairwsie similarity scores of all movies/shows with that movie/show
-    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = list(enumerate(cosine_sim[index]))
 
     # Sort the movies/shows based on the similarity scores
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)

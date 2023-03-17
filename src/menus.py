@@ -7,12 +7,12 @@ clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 
 def main_menu(movies=None, shows=None):
     """
-    Show the recommendation options on the screen
+    Show the recommendation options on the screen.
     """
     
     print("Loading...")
-    indices_movies, cosine_sim_movies = rc.dataPreparation(data=movies)
-    indices_shows, cosine_sim_shows = rc.dataPreparation(data=shows)
+    indices_movies, cosine_sim_movies = rc.preparation(data=movies)
+    indices_shows, cosine_sim_shows = rc.preparation(data=shows)
     clear()
 
     ret = -1
@@ -27,14 +27,16 @@ def main_menu(movies=None, shows=None):
 
         if ret == 1:
             clear()
-            title = rc.getTitle(indices=indices_movies)
-            rc.getRecommendation(title=title, data=movies, indices=indices_movies, cosine_sim=cosine_sim_movies)
-            input("\n(Press anithing)")
+            index = rc.getTitle(indices=indices_movies)
+            if index:
+                rc.getRecommendation(index=index, data=movies, cosine_sim=cosine_sim_movies)
+                input("\n(Press anithing)")
         elif ret == 2:
             clear()
-            title = rc.getTitle(indices=indices_shows)
-            rc.getRecomendation(title=title, data=shows, indices=indices_shows, cosine_sim=cosine_sim_shows)
-            input("\n(Press anithing)")
+            index = rc.getTitle(indices=indices_shows)
+            if index:
+                rc.getRecommendation(index=index, data=shows, cosine_sim=cosine_sim_shows)
+                input("\n(Press anithing)")
 
         clear()
 
