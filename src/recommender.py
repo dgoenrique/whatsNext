@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 
 import pandas as pd
+import numpy as np
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+
+clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 
 def preparation(data=None):
     """
@@ -24,7 +28,7 @@ def preparation(data=None):
 
     return indices, cosine_sim
 
-def getTitle(indices=None):
+def getTitle(indices=None, data=None):
     """
     Function that gets the 'index searcher' and searches
     the user's title index.
@@ -33,12 +37,27 @@ def getTitle(indices=None):
     title = input("Recommend similar titles to: ") 
     try:
         index = indices[title]  
-        return index
+        
     except:
         print("\n   Title not found") 
         print('**' * 40)
         input("\n(Press anithing)")
         return None
+
+    if isinstance(index, np.int64):
+            return index
+    else:
+        rt = -1
+        while rt not in range(len(index)):
+            print("\nThere are several titles with this name. Select the one you want: ")
+            for i in range(len(index)):
+                print(f"{i+1} - {data['title'].iloc[index[i]]}", end= " ")
+                print(f"({data['release_year'].iloc[index[i]]})")
+            rt = int(input("Title: ")) - 1
+            if rt not in range(len(index)):
+                clear()
+                print('**' * 40)
+        return index[rt]
 
 def getRecommendation(index=None, data=None, cosine_sim=None):
     """

@@ -27,13 +27,13 @@ def main_menu(movies=None, shows=None):
 
         if ret == 1:
             clear()
-            index = rc.getTitle(indices=indices_movies)
+            index = rc.getTitle(indices=indices_movies, data=movies)
             if index:
                 rc.getRecommendation(index=index, data=movies, cosine_sim=cosine_sim_movies)
                 input("\n(Press anithing)")
         elif ret == 2:
             clear()
-            index = rc.getTitle(indices=indices_shows)
+            index = rc.getTitle(indices=indices_shows, data=shows)
             if index:
                 rc.getRecommendation(index=index, data=shows, cosine_sim=cosine_sim_shows)
                 input("\n(Press anithing)")
