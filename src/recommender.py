@@ -1,13 +1,28 @@
-#!/usr/bin/env python
-
-import pandas as pd
-import numpy as np
-import os
+import streamlit as st
+import pandas as pd 
+import numpy as np 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 
+@st.cache_data
+def open_csv(filepath="../data/clean/title.csv", type=None):
+    """
+    Function that takes as input a file path and 
+    returns the data  from Movies and Tv Shows.
+    """
+    data = pd.read_csv(filepath)
+
+    if type == 'movie':
+        movies = data[data['type'] == 'MOVIE'].copy().reset_index()
+        movies.drop(['index'], axis=1, inplace=True)
+        return movies
+    else:
+        shows = data[data['type'] == 'SHOW'].copy().reset_index()
+        shows.drop(['index'], axis=1, inplace=True)
+        return shows 
+
+@st.cache_resource
 def preparation(data=None):
     """
     A function that prepares the cosine similarity function
@@ -20,44 +35,53 @@ def preparation(data=None):
     #Construct the required TF-IDF matrix by fitting and transforming the data
     tfidf_matrix = tfidf.fit_transform(data['description'])
 
-    # Compute the cosine similarity matrix
+    #Compute the cosine similarity matrix
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
     #Identify the index of a movie/show in our metadata DataFrame
-    indices = pd.Series(data.index, index=data['title'])
+    indices = pd.Series(data.index, index=data['id'])
 
     return indices, cosine_sim
+
 
 def getTitle(indices=None, data=None):
     """
     Function that gets the 'index searcher' and searches
     the user's title index.
     """
-    print('**' * 40)
-    title = input("Recommend similar titles to: ") 
-    try:
-        index = indices[title]  
-        
-    except:
-        print("\n   Title not found") 
-        print('**' * 40)
-        input("\n(Press anithing)")
-        return None
+    #Use a text_input to get the keywords to filter the dataframe
+    title = st.text_input("**Search for similar titles to:**", key='title')
 
-    if isinstance(index, np.int64):
-            return index
-    else:
-        rt = -1
-        while rt not in range(len(index)):
-            print("\nThere are several titles with this name. Select the one you want: ")
-            for i in range(len(index)):
-                print(f"{i+1} - {data['title'].iloc[index[i]]}", end= " ")
-                print(f"({data['release_year'].iloc[index[i]]})")
-            rt = int(input("Title: ")) - 1
-            if rt not in range(len(index)):
-                clear()
-                print('**' * 40)
-        return index[rt]
+    try:
+        #Mask to search for a title
+        mask = data['title'].str.contains(title)
+    except:
+        return
+
+    search = data[mask]
+
+    placeholder = st.empty()
+
+    with placeholder.container():
+        number_cards = 3
+        if title:
+            for n_row, row in search.reset_index().iterrows():
+                i = n_row%number_cards
+                if i==0:
+                    st.write("---")
+                    cols = st.columns(number_cards, gap="large")
+                #draw the card
+                with cols[n_row%number_cards]:
+                    st.markdown(f"### {row['title'].strip()} ({row['release_year']})")
+                    st.markdown(f"**Description:** {row['description'].strip()}")
+                    st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
+                    st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")
+                    st.markdown(f"**Streaming at:** {row['streaming_platform'].strip('[]')}")
+                    if st.button("Select this title", key=f"button_{row['id']}"):
+                        index = indices[row['id']] 
+                        placeholder.empty()
+                        return index
+
 
 def getRecommendation(index=None, data=None, cosine_sim=None):
     """
@@ -65,27 +89,25 @@ def getRecommendation(index=None, data=None, cosine_sim=None):
     cosine similarity  as input and prints on the screen the 
     10 most similar titles based on description.
     """
-    print('**' * 40)
-
-    print(f"Symilar to: {data['title'].iloc[index]} ({data['release_year'].iloc[index]})", end="\n\n")
-
-    # Get the pairwsie similarity scores of all movies/shows with that movie/show
+    #Get the pairwsie similarity scores of all movies/shows with that movie/show
     sim_scores = list(enumerate(cosine_sim[index]))
 
-    # Sort the movies/shows based on the similarity scores
+    #Sort the movies/shows based on the similarity scores
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
-    # Get the scores of the 10 most similar movies/shows
+    #Get the scores of the 10 most similar movies/shows
     sim_scores = sim_scores[1:11]
 
-    # Get the movie/show indices
+    #Get the movie/show indices
     data_indices = [i[0] for i in sim_scores]
-    
+
+    st.markdown(f"# Similar Titles to {data['title'].iloc[index]} ({data['release_year'].iloc[index]}):")
+
     for i in data_indices:
-        print(data['title'].iloc[i], end=' ')
-        print(f"({data['release_year'].iloc[i]})")
+        st.write("---")
+        st.markdown(f"### {data['title'].iloc[i].strip()} ({data['release_year'].iloc[i]})")
+        st.markdown(f"**Description:** {data['description'].iloc[i].strip()}")
+        st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
+        st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")
+        st.markdown(f"**Avaliable on:** {data['streaming_platform'].iloc[i].strip('[]')}")
 
-    print('**' * 40)
-
-if __name__ == "__main__":
-    pass
