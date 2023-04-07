@@ -4,7 +4,7 @@
 
 <section align="center">
     <a href="https://unsplash.com/@jakobowens1">
-        <img src="img/clap.jpg" alt="Clapperboard"/>
+        <img src="app/img/clap.jpg" alt="Clapperboard"/>
     </a>
     <div>
         Photo by <a href="https://unsplash.com/@jakobowens1">Jakob Owens</a>
