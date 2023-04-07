@@ -73,10 +73,11 @@ def getTitle(indices=None, data=None):
                 #draw the card
                 with cols[n_row%number_cards]:
                     st.markdown(f"### {row['title'].strip()} ({row['release_year']})")
+                    st.markdown(f"**Genre:** {row['genre'].strip().title()}")
                     st.markdown(f"**Description:** {row['description'].strip()}")
-                    st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
-                    st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")
-                    st.markdown(f"**Streaming at:** {row['streaming_platform'].strip('[]')}")
+                    st.markdown(f"**IMDb Score ⭐:** {row['imdb_score']}")
+                    st.markdown(f"**TMDB Score ⭐:** {row['tmdb_score']}")
+                    st.markdown(f"**Avaliable on:** {row['streaming_platform'].strip('[]')}")
                     if st.button("Select this title", key=f"button_{row['id']}"):
                         index = indices[row['id']] 
                         placeholder.empty()
@@ -106,6 +107,7 @@ def getRecommendation(index=None, data=None, cosine_sim=None):
     for i in data_indices:
         st.write("---")
         st.markdown(f"### {data['title'].iloc[i].strip()} ({data['release_year'].iloc[i]})")
+        st.markdown(f"**Genre:** {data['genre'].iloc[i].strip().title()}")
         st.markdown(f"**Description:** {data['description'].iloc[i].strip()}")
         st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
         st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")

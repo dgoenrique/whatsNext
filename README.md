@@ -2,22 +2,21 @@
 <h1 align="center"> whatsNext </h1>
 <h3 align="center"> A simple Movie and TV Show Recommendation System</h3>
 
-<figure align="center">
+<section align="center">
     <a href="https://unsplash.com/@jakobowens1">
         <img src="img/clap.jpg" alt="Clapperboard"/>
     </a>
-    <figcaption>
-        Photo by Jakob Owens
-    </figcaption>
-</figure>
-
+    <div>
+        Photo by <a href="https://unsplash.com/@jakobowens1">Jakob Owens</a>
+    </div>
+</section>
 
 Recommendation systems play a crucial role in the success of streaming platforms
 by providing personalized content suggestions to users and increasing user engagement.
 Streaming platforms, such as Netflix and Disney+, uses these systems to recommend movies 
 and TV shows based on the user's previous viewing history. 
 
-So, in this project, I build a simple plot description-based recommendation system 
+So, in this project, I build a simple **plot description-based** recommendation system 
 for Movies and TV Shows with the data from these streaming platforms:
 
 * [Disney+](https://www.disneyplus.com/)
@@ -32,6 +31,25 @@ containing data available in the United States.
 
 This Recommender System is not perfect. Sometimes it may recommend something not quite related.
 But it was a good test to try some skills I learned.
+
+## Quickstart
+
+#### Requirements and Dependencies
+
+Install all missing dependencies at once:
+
+```
+pip install -r requirements.txt
+```
+
+#### Run
+
+Go to *src/* directory and type on your terminal:
+
+
+```
+streamlit run Home.py
+```
 
 ---
 *This Recommendation System is based on [this notebook](https://www.kaggle.com/code/ibtesama/getting-started-with-a-movie-recommendation-system)

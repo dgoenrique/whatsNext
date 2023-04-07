@@ -35,7 +35,7 @@ def main():
        Streaming platforms, such as Netflix and Disney+, uses these systems to recommend movies 
        and TV shows based on the user's previous viewing history. 
 
-       So, in this project, I build a simple plot description-based recommendation system 
+       So, in this project, I build a simple **plot description-based** recommendation system 
        for Movies and TV Shows with the data from these streaming platforms:
 
        * [Disney+](https://www.disneyplus.com/)
