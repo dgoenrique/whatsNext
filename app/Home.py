@@ -26,7 +26,7 @@ def main():
 
     """)
 
-    img = Image.open('../img/clap.jpg')
+    img = Image.open('app/img/clap.jpg')
     st.image(img, caption='Photo by Jakob Owens')
 
     st.markdown("""

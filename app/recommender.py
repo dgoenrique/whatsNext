@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import linear_kernel
 
 
 @st.cache_data
-def open_csv(filepath="../data/clean/title.csv", type=None):
+def open_csv(filepath="None", type=None):
     """
     Function that takes as input a file path and 
     returns the data  from Movies and Tv Shows.
@@ -79,7 +79,7 @@ def getTitle(indices=None, data=None):
                     st.markdown(f"**Description:** {row['description'].strip()}")
                     st.markdown(f"**IMDb Score ⭐:** {row['imdb_score']}")
                     st.markdown(f"**TMDB Score ⭐:** {row['tmdb_score']}")
-                    st.markdown(f"**Avaliable on:** {row['streaming_platform'].title()}")
+                    st.markdown(f"**Available on:** {row['streaming_platform'].title()}")
                     if st.button("Select this title", key=f"button_{row['id']}"):
                         index = indices[row['id']] 
                         placeholder.empty()
@@ -113,5 +113,5 @@ def getRecommendation(index=None, data=None, cosine_sim=None):
         st.markdown(f"**Description:** {data['description'].iloc[i].strip()}")
         st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
         st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")
-        st.markdown(f"**Avaliable on:** {data['streaming_platform'].iloc[i].title()}")
+        st.markdown(f"**Available on:** {data['streaming_platform'].iloc[i].title()}")
 

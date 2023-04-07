@@ -16,7 +16,7 @@ st.set_page_config(
 
 def main():
     st.write("# Movie Recommender 🎥")
-    movies = rc.open_csv(filepath="../data/clean/title.csv",type='movie')
+    movies = rc.open_csv(filepath="app/data/clean/title.csv",type='movie')
     indices_movies, cosine_sim_movies = rc.preparation(data=movies)
 
     index = rc.getTitle(indices=indices_movies, data=movies)
