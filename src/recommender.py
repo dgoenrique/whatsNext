@@ -16,10 +16,12 @@ def open_csv(filepath="../data/clean/title.csv", type=None):
     if type == 'movie':
         movies = data[data['type'] == 'MOVIE'].copy().reset_index()
         movies.drop(['index'], axis=1, inplace=True)
+        movies['streaming_platform'] = movies['streaming_platform'].str.replace('[','').str.replace("'",'').str.replace(']','')
         return movies
     else:
         shows = data[data['type'] == 'SHOW'].copy().reset_index()
         shows.drop(['index'], axis=1, inplace=True)
+        shows['streaming_platform'] = shows['streaming_platform'].str.replace('[','').str.replace("'",'').str.replace(']','')
         return shows 
 
 @st.cache_resource
@@ -77,7 +79,7 @@ def getTitle(indices=None, data=None):
                     st.markdown(f"**Description:** {row['description'].strip()}")
                     st.markdown(f"**IMDb Score ⭐:** {row['imdb_score']}")
                     st.markdown(f"**TMDB Score ⭐:** {row['tmdb_score']}")
-                    st.markdown(f"**Avaliable on:** {row['streaming_platform'].strip('[]')}")
+                    st.markdown(f"**Avaliable on:** {row['streaming_platform'].title()}")
                     if st.button("Select this title", key=f"button_{row['id']}"):
                         index = indices[row['id']] 
                         placeholder.empty()
@@ -111,5 +113,5 @@ def getRecommendation(index=None, data=None, cosine_sim=None):
         st.markdown(f"**Description:** {data['description'].iloc[i].strip()}")
         st.markdown(f"**IMDb Score ⭐:** {data['imdb_score'].iloc[i]}")
         st.markdown(f"**TMDB Score ⭐:** {data['tmdb_score'].iloc[i]}")
-        st.markdown(f"**Avaliable on:** {data['streaming_platform'].iloc[i].strip('[]')}")
+        st.markdown(f"**Avaliable on:** {data['streaming_platform'].iloc[i].title()}")
 
