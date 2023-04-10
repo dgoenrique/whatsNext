@@ -67,6 +67,7 @@ def getTitle(indices=None, data=None):
     with placeholder.container():
         number_cards = 3
         if title:
+            st.write("## Select a Title:")
             for n_row, row in search.reset_index().iterrows():
                 i = n_row%number_cards
                 if i==0:
