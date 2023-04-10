@@ -34,17 +34,25 @@ But it was a good test to try some skills I learned.
 
 ## Quickstart
 
-#### Requirements and Dependencies
+### Online Version
 
-Install all missing dependencies at once:
+You can access the recommendation system online [here](https://whatsnext.streamlit.app/).
+
+### Local Version
+
+Clone the repository:
+
+```
+git clone https://github.com/dgoenrique/whatsNext.git
+```
+
+Install all dependencies at once:
 
 ```
 pip install -r requirements.txt
 ```
 
-#### Run
-
-Go to *src/* directory and type on your terminal:
+Go to the *app/* directory and type on your terminal:
 
 
 ```
