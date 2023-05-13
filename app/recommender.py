@@ -52,11 +52,11 @@ def getTitle(indices=None, data=None):
     the user's title index.
     """
     #Use a text_input to get the keywords to filter the dataframe
-    title = st.text_input("**Search for similar titles to:**", key='title')
+    title = st.text_input("**Search for similar titles to:**", key='title').lower()
 
     try:
         #Mask to search for a title
-        mask = data['title'].str.contains(title)
+        mask = data['title'].str.lower().str.contains(title)
     except:
         return
 
